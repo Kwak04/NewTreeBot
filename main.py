@@ -5,8 +5,12 @@ import json
 with open('secrets.json') as secrets_file:
     secrets = json.load(secrets_file)
 
+# Load constant strings from strings.json
+with open('strings.json') as strings_file:
+    strings = json.load(strings_file)
 
-def get_site_embed(url, name, color, image_url='https://icon-library.com/images/website-icon-square/website-icon-square-20.jpg'):
+
+def get_site_embed(url, name, color, image_url=strings['img-default-site-thumbnail']):
     embed = discord.Embed(
         title=name,
         description=f'[사이트로 이동하기]({url})',
@@ -35,7 +39,7 @@ class MainClient(discord.Client):
                 url='https://www.google.com',
                 name='Google',
                 color=0x347deb,
-                image_url='http://www.koreapost.co.kr/news/photo/202010/52266_50209_510.jpg'
+                image_url=strings['img-google-thumbnail']
             ))
 
 
