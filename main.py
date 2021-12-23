@@ -10,16 +10,6 @@ with open('strings.json') as strings_file:
     strings = json.load(strings_file)
 
 
-def get_site_embed(url, name, color, image_url=strings['img-default-site-thumbnail']):
-    embed = discord.Embed(
-        title=name,
-        description=f'[사이트로 이동하기]({url})',
-        colour=color
-    )
-    embed.set_thumbnail(url=image_url)
-    return embed
-
-
 class MainClient(discord.Client):
     async def on_ready(self):
         activity = discord.Activity(name='새나무제', type=discord.ActivityType.playing)
@@ -85,3 +75,13 @@ class MainClient(discord.Client):
 
 client = MainClient()
 client.run(secrets["token"])
+
+
+def get_site_embed(url, name, color, image_url=strings['img-default-site-thumbnail']):
+    embed = discord.Embed(
+        title=name,
+        description=f'[사이트로 이동하기]({url})',
+        colour=color
+    )
+    embed.set_thumbnail(url=image_url)
+    return embed
