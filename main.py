@@ -6,6 +6,16 @@ with open('secrets.json') as secrets_file:
     secrets = json.load(secrets_file)
 
 
+def get_site_embed(url, name, color, image_url='https://icon-library.com/images/website-icon-square/website-icon-square-20.jpg'):
+    embed = discord.Embed(
+        title=name,
+        description=f'[사이트로 이동하기]({url})',
+        colour=color
+    )
+    embed.set_thumbnail(url=image_url)
+    return embed
+
+
 class MainClient(discord.Client):
     async def on_ready(self):
         activity = discord.Activity(name='새나무제', type=discord.ActivityType.playing)
@@ -18,6 +28,15 @@ class MainClient(discord.Client):
         # Defining to a variable
         message_content = message.content
         channel = message.channel
+
+        # Open site
+        if message_content.startswith('새나무 구글'):
+            await channel.send(embed=get_site_embed(
+                url='https://www.google.com',
+                name='Google',
+                color=0x347deb,
+                image_url='http://www.koreapost.co.kr/news/photo/202010/52266_50209_510.jpg'
+            ))
 
 
 client = MainClient()
