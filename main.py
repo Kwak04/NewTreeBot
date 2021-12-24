@@ -32,6 +32,8 @@ class MainClient(discord.Client):
         activity = discord.Activity(name='새나무제', type=discord.ActivityType.playing)
         await self.change_presence(activity=activity)
 
+        log('NOW ONLINE', f'Logged on as {self.user}')
+
     async def on_message(self, message):
         if message.author.bot or message.author == client.user:
             return  # Do nothing (Don't reply)
