@@ -5,5 +5,7 @@
   "img-naver-thumbnail": "https://cdn.imweb.me/thumbnail/20210208/8bcebdfb48c69.png",
   "img-ebs-thumbnail": "https://t1.daumcdn.net/cfile/tistory/99F73D465F1ACE4938",
   "img-classroom-thumbnail": "https://upload.wikimedia.org/wikipedia/commons/5/59/Google_Classroom_Logo.png",
-  "img-megastudy-thumbnail": "http://img.megastudy.net/pmp_zone/app/smart.png"
+  "img-megastudy-thumbnail": "http://img.megastudy.net/pmp_zone/app/smart.png",
+
+  "msg-swear-detector": "<@{0.author.id}>님 욕하지 마세요~~^^\n삭제된 메시지: ||{0.content}||"
 }
