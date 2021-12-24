@@ -34,7 +34,8 @@ class MainClient(discord.Client):
 
         log('NOW ONLINE', f'Logged on as {self.user}')
 
-    async def on_message(self, message):
+    @staticmethod
+    async def on_message(message):
         if message.author.bot or message.author == client.user:
             return  # Do nothing (Don't reply)
 
