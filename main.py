@@ -1,3 +1,5 @@
+import datetime
+
 import discord
 import json
 
@@ -62,6 +64,19 @@ class MainClient(discord.Client):
                     )
                     await channel.send(embed=embed)
                     log('욕 감지됨', f'감지된 욕: {word}', user=message_author)
+
+        # Current time
+        #
+        if message_content.startswith('새나무 몇 시') or message_content.startswith('새나무 몇시'):
+            current_time = datetime.datetime.now()
+
+            embed = discord.Embed(
+                title='현재 날짜 및 시간입니다.',
+                description=strings['msg-time'].format(current_time),
+                colour=0xffe600
+            )
+            await channel.send(embed=embed)
+            log('현재 날짜/시각', strings['msg-time-without-line-break'].format(current_time), user=message_author)
 
         # Open site
         #
