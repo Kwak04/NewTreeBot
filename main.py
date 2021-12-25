@@ -145,23 +145,53 @@ class MainClient(discord.Client):
         if message_content.startswith('새나무 업다운') or message_content.startswith('새나무 UPDOWN'):
             number = random.randint(1, 100)
             guessed_number = 0
+            count = 0
 
-            await channel.send('Start')
-            log('UPDOWN', f'게임을 시작합니다. 정답: {number}', user=message_author)
+            embed = discord.Embed(
+                title='UPDOWN 게임을 시작합니다.',
+                description='1부터 100 사이의 숫자를 맞춰주세요!',
+                colour=0x0dffb6
+            )
+            await channel.send(embed=embed)
+            log('UPDOWN', f'게임을 시작합니다. | 정답: {number}', user=message_author)
 
             def check(m):
+                # TODO: Check the condition of 1 <= number <= 100
                 return m.author == message_author and m.content.isdigit()
 
-            while guessed_number != number:
+            while guessed_number != number:  # Until the guess is right
                 answer = await self.wait_for('message', check=check)
                 guessed_number = int(answer.content)
+                count += 1
 
-                if guessed_number > number:
-                    await channel.send('DOWN!')
-                elif guessed_number < number:
-                    await channel.send('UP!')
+                # UP
+                if guessed_number < number:
+                    embed = discord.Embed(
+                        title='UP!',
+                        description='정답은 입력하신 숫자보다 큽니다!',
+                        colour=0xff7c2b
+                    )
+                    await channel.send(embed=embed)
+                    log('UPDOWN', f'Up!   | {guessed_number} < {number}', user=message_author)
 
-            await channel.send('맞췄!')
+                # DOWN
+                elif guessed_number > number:
+                    embed = discord.Embed(
+                        title='DOWN!',
+                        description='정답은 입력하신 숫자보다 작습니다!',
+                        colour=0xff7c2b
+                    )
+                    await channel.send(embed=embed)
+                    log('UPDOWN', f'Down! | {guessed_number} > {number}', user=message_author)
+
+            # GAME OVER
+            embed = discord.Embed(
+                title='맞추셨습니다!',
+                description=f'시도 횟수: {count}',
+                colour=0x0dff62
+            )
+            await channel.send(embed=embed)
+            log('UPDOWN', f'게임이 종료되었습니다. | 시도 횟수: {count}', user=message_author)
 
 
 client = MainClient()
