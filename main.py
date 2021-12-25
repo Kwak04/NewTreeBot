@@ -156,16 +156,22 @@ class MainClient(discord.Client):
             log('UPDOWN', f'게임을 시작합니다. | 정답: {number}', user=message_author)
 
             def check(m):
-                guessed_number_condition = 1 <= int(m.content) <= 100
-                return m.author == message_author and m.content.isdigit() and guessed_number_condition
+                return m.author == message_author and m.content.isdigit()
 
             while guessed_number != number:  # Until the guess is right
                 answer = await self.wait_for('message', check=check)
                 guessed_number = int(answer.content)
                 count += 1
 
+                # Basic condition check
+                if not (1 <= guessed_number <= 100):
+                    await channel.send(embed=discord.Embed(
+                        title='1부터 100까지의 수만 입력하실 수 있습니다.',
+                        description='수를 다시 입력해 주세요.'
+                    ))
+
                 # UP
-                if guessed_number < number:
+                elif guessed_number < number:
                     embed = discord.Embed(
                         title='UP!',
                         description='정답은 입력하신 숫자보다 큽니다!',
