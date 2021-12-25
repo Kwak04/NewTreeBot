@@ -54,7 +54,7 @@ class MainClient(discord.Client):
             if word in message_content:
                 try:
                     await message.delete()
-                except:
+                except discord.errors.Forbidden:
                     log('ERROR', 'Unable to delete message')
                 else:
                     embed = discord.Embed(
@@ -156,8 +156,8 @@ class MainClient(discord.Client):
             log('UPDOWN', f'게임을 시작합니다. | 정답: {number}', user=message_author)
 
             def check(m):
-                # TODO: Check the condition of 1 <= number <= 100
-                return m.author == message_author and m.content.isdigit()
+                guessed_number_condition = 1 <= int(m.content) <= 100
+                return m.author == message_author and m.content.isdigit() and guessed_number_condition
 
             while guessed_number != number:  # Until the guess is right
                 answer = await self.wait_for('message', check=check)
