@@ -167,7 +167,8 @@ class MainClient(discord.Client):
                 if not (1 <= guessed_number <= 100):
                     await channel.send(embed=discord.Embed(
                         title='1부터 100까지의 수만 입력하실 수 있습니다.',
-                        description='수를 다시 입력해 주세요.'
+                        description='수를 다시 입력해 주세요.',
+                        colour=0xff0000
                     ))
 
                 # UP
