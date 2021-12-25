@@ -1,4 +1,5 @@
 import datetime
+import random
 
 import discord
 import json
@@ -36,8 +37,7 @@ class MainClient(discord.Client):
 
         log('NOW ONLINE', f'Logged on as {self.user}')
 
-    @staticmethod
-    async def on_message(message):
+    async def on_message(self, message):
         if message.author.bot or message.author == client.user:
             return  # Do nothing (Don't reply)
 
@@ -139,6 +139,29 @@ class MainClient(discord.Client):
                 image_url=strings['img-megastudy-thumbnail']
             ))
             log('사이트 이동', site_name, user=message_author)
+
+        # UPDOWN game
+        #
+        if message_content.startswith('새나무 업다운') or message_content.startswith('새나무 UPDOWN'):
+            number = random.randint(1, 100)
+            guessed_number = 0
+
+            await channel.send('Start')
+            log('UPDOWN', f'게임을 시작합니다. 정답: {number}', user=message_author)
+
+            def check(m):
+                return m.author == message_author and m.content.isdigit()
+
+            while guessed_number != number:
+                answer = await self.wait_for('message', check=check)
+                guessed_number = int(answer.content)
+
+                if guessed_number > number:
+                    await channel.send('DOWN!')
+                elif guessed_number < number:
+                    await channel.send('UP!')
+
+            await channel.send('맞췄!')
 
 
 client = MainClient()
