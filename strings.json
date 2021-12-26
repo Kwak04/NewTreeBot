@@ -6,6 +6,7 @@
   "img-ebs-thumbnail": "https://t1.daumcdn.net/cfile/tistory/99F73D465F1ACE4938",
   "img-classroom-thumbnail": "https://upload.wikimedia.org/wikipedia/commons/5/59/Google_Classroom_Logo.png",
   "img-megastudy-thumbnail": "http://img.megastudy.net/pmp_zone/app/smart.png",
+  "img-tronix-icon": "https://cdn.discordapp.com/attachments/590936441865895960/924779629686947901/2020-10-03_6.37.17.jpeg",
 
   "msg-swear-detector": "<@{0.author.id}>님 욕하지 마세요~~^^\n삭제된 메시지: ||{0.content}||",
   "msg-time": "{0.year}년 {0.month}월 {0.day}일\n{0.hour}시 {0.minute}분 {0.second}초",

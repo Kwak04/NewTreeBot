@@ -63,6 +63,47 @@ class MainClient(discord.Client):
         message_author = message.author
         channel = message.channel
 
+        # HELP
+        #
+        if message_content.startswith('새나무 도움말'):
+            help_embed = discord.Embed(
+                title='도움이 필요하신가요?',
+                colour=0xffd500
+            )
+            help_embed.add_field(
+                name='욕 감지기',
+                value='채팅방에서 욕을 해 보세요.(?) 어차피 자동으로 삭제되어서, 깨끗한 채팅방을 만들 수 있답니다!',
+                inline=False
+            )
+            help_embed.add_field(
+                name='새나무 몇 시야',
+                value='현재 날짜 및 시간을 알려줍니다.',
+                inline=False
+            )
+            help_embed.add_field(
+                name='새나무 업다운',
+                value='UPDOWN 게임을 즐길 수 있습니다.',
+                inline=False
+            )
+            help_embed.add_field(
+                name='새나무 내 점수 or 새나무 내 기록 보여줘',
+                value='내 게임 최고 기록을 확인할 수 있습니다.',
+                inline=False
+            )
+            help_embed.add_field(
+                name='새나무 랭킹',
+                value='전체 서버의 최고 기록을 확인할 수 있습니다. 기프티콘의 주인공이... 되겠죠?',
+                inline=False
+            )
+
+            help_embed.set_footer(
+                text='NewTreeBot v1.0',
+                icon_url=strings['img-tronix-icon']
+            )
+
+            await channel.send(embed=help_embed)
+            log('도움말', '도움말을 출력합니다.', user=message_author)
+
         # Swear words detector
         # This deletes the original message, and replace it with a spoiler(hidden)  message
         #
