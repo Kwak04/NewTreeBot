@@ -1,7 +1,10 @@
 {
   "user_id_example": {
-    "user_name": "example",
     "count": 10,
-    "timestamp": "2004-08-23"
+    "date": "2004-08-23"
+  },
+  "456460258802532364": {
+    "count": 4,
+    "date": "2021-12-27 03:03:38"
   }
 }

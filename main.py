@@ -1,8 +1,7 @@
-import datetime
-import random
-
 import discord
 import json
+from datetime import datetime
+import random
 
 # Load secrets from secrets.json
 with open('secrets.json', 'r', encoding='UTF8') as secrets_file:
@@ -28,6 +27,18 @@ def log(title, description, user=''):
         print(f'[{title}] {description}')
     else:
         print(f'{user}: [{title}] {description}')
+
+
+def dump_new_record(data_block, score, user):
+    # Write data
+    data_block[str(user.id)] = {
+        'count': score,
+        'date': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    }
+
+    # Dump data
+    with open('updownscore.json', 'w', encoding='UTF8') as updown_score_file:
+        json.dump(data_block, updown_score_file, indent=2, ensure_ascii=False)
 
 
 class MainClient(discord.Client):
@@ -68,7 +79,7 @@ class MainClient(discord.Client):
         # Current time
         #
         if message_content.startswith('새나무 몇 시') or message_content.startswith('새나무 몇시'):
-            current_time = datetime.datetime.now()
+            current_time = datetime.now()
 
             embed = discord.Embed(
                 title='현재 날짜 및 시간입니다.',
@@ -192,6 +203,22 @@ class MainClient(discord.Client):
                     log('UPDOWN', f'Down! | {guessed_number} > {number}', user=message_author)
 
             # GAME OVER
+
+            # Load updownscore.json
+            with open('updownscore.json', 'r', encoding='UTF8') as updown_score_file:
+                my_updown_score = json.load(updown_score_file)
+
+            # Check if this is a new record
+            try:
+                previous_count_record = my_updown_score[str(message_author.id)]['count']
+            except KeyError:  # Previous record is not existing, so it becomes your first new record!
+                dump_new_record(my_updown_score, count, message_author)
+            else:
+                if previous_count_record <= count:  # Less is more :) (exceptionally in this game)
+                    pass  # Not your new record, so do nothing
+                else:  # This is your new record!!!
+                    dump_new_record(my_updown_score, count, message_author)
+
             embed = discord.Embed(
                 title='맞추셨습니다!',
                 description=f'시도 횟수: {count}',
@@ -207,11 +234,11 @@ class MainClient(discord.Client):
             if author_name is None:
                 author_name = message_author.name
 
-            with open('updownscore.json', 'r', encoding='UTF8') as ranking_updown_file:
-                ranking_updown = json.load(ranking_updown_file)
+            with open('updownscore.json', 'r', encoding='UTF8') as updown_score_file:
+                my_updown_score = json.load(updown_score_file)[str(message_author.id)]
                 try:
-                    my_count = ranking_updown[message_author.id]['count']
-                    my_timestamp = ranking_updown[message_author.id]['timestamp']
+                    my_count = my_updown_score['count']
+                    my_date = my_updown_score['date']
                 except KeyError:
                     await channel.send(embed=discord.Embed(
                         title=f'{author_name}님의 플레이 기록이 없습니다.',
@@ -222,11 +249,11 @@ class MainClient(discord.Client):
                 else:
                     await channel.send(embed=discord.Embed(
                         title=f'{author_name}님의 최고 기록!',
-                        description=f'총 {my_count}번 만에 수를 맞추셨습니다.\n({my_timestamp}에 경신됨)',
+                        description=f'총 {my_count}번 만에 수를 맞추셨습니다.\n({my_date}에 경신됨)',
                         colour=0x4287f5  # Blue
                     ))
                     log('업다운 점수 확인', f'최고 기록: {my_count}', user=message_author)
                     
 
 client = MainClient()
-client.run(secrets["token"])
+client.run(secrets['token'])
