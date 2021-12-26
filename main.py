@@ -68,12 +68,11 @@ class MainClient(discord.Client):
                 except discord.errors.Forbidden:
                     log('ERROR', 'Unable to delete message')
                 else:
-                    embed = discord.Embed(
+                    await channel.send(discord.Embed(
                         title='욕설이 감지되었습니다.',
                         description=strings['msg-swear-detector'].format(message),
                         colour=0xff0000  # Red
-                    )
-                    await channel.send(embed=embed)
+                    ))
                     log('욕 감지됨', f'감지된 욕: {word}', user=message_author)
 
         # Current time
@@ -81,12 +80,11 @@ class MainClient(discord.Client):
         if message_content.startswith('새나무 몇 시') or message_content.startswith('새나무 몇시'):
             current_time = datetime.now()
 
-            embed = discord.Embed(
+            await channel.send(embed=discord.Embed(
                 title='현재 날짜 및 시간입니다.',
                 description=strings['msg-time'].format(current_time),
                 colour=0xffe600
-            )
-            await channel.send(embed=embed)
+            ))
             log('현재 날짜/시각', strings['msg-time-without-line-break'].format(current_time), user=message_author)
 
         # Open site
@@ -158,12 +156,11 @@ class MainClient(discord.Client):
             guessed_number = 0
             count = 0
 
-            embed = discord.Embed(
+            await channel.send(embed=discord.Embed(
                 title='UPDOWN 게임을 시작합니다.',
                 description='1부터 100 사이의 숫자를 맞춰주세요!',
                 colour=0x0dffb6  # Mint
-            )
-            await channel.send(embed=embed)
+            ))
             log('UPDOWN', f'게임을 시작합니다. | 정답: {number}', user=message_author)
 
             def check(m):
@@ -184,22 +181,20 @@ class MainClient(discord.Client):
 
                 # UP
                 elif guessed_number < number:
-                    embed = discord.Embed(
+                    await channel.send(embed=discord.Embed(
                         title='UP!',
                         description='정답은 입력하신 숫자보다 큽니다!',
                         colour=0xff7c2b  # Brown
-                    )
-                    await channel.send(embed=embed)
+                    ))
                     log('UPDOWN', f'Up!   | {guessed_number} < {number}', user=message_author)
 
                 # DOWN
                 elif guessed_number > number:
-                    embed = discord.Embed(
+                    await channel.send(embed=discord.Embed(
                         title='DOWN!',
                         description='정답은 입력하신 숫자보다 작습니다!',
                         colour=0xff7c2b  # Brown
-                    )
-                    await channel.send(embed=embed)
+                    ))
                     log('UPDOWN', f'Down! | {guessed_number} > {number}', user=message_author)
 
             # GAME OVER
@@ -219,12 +214,11 @@ class MainClient(discord.Client):
                 else:  # This is your new record!!!
                     dump_new_record(my_updown_score, count, message_author)
 
-            embed = discord.Embed(
+            await channel.send(embed=discord.Embed(
                 title='맞추셨습니다!',
                 description=f'시도 횟수: {count}',
                 colour=0x0dff62  # Green
-            )
-            await channel.send(embed=embed)
+            ))
             log('UPDOWN', f'게임이 종료되었습니다. | 시도 횟수: {count}', user=message_author)
 
         # Check my score
