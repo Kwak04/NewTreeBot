@@ -253,7 +253,34 @@ class MainClient(discord.Client):
                         colour=0x4287f5  # Blue
                     ))
                     log('업다운 점수 확인', f'최고 기록: {my_count}', user=message_author)
-                    
+
+        # Check out the highest score in the server
+        if message_content.startswith('새나무 랭킹'):
+            with open('updownscore.json', 'r', encoding='UTF8') as updown_score_file:
+                updown_scores = json.load(updown_score_file)
+
+            scores_list = list()
+            highest_score_people_list = list()  # Consisted of user_ids
+
+            for user_id in updown_scores:
+                scores_list.append(updown_scores[user_id]['count'])
+
+            highest_score = min(scores_list)  # Less is more
+
+            for user_id in updown_scores:
+                if updown_scores[user_id]['count'] == highest_score:
+                    highest_score_people_list.append(user_id)
+
+            highest_score_people_string = ''
+            for highest_score_people in highest_score_people_list:
+                highest_score_people_string += f'<@{highest_score_people}> '
+
+            await channel.send(embed=discord.Embed(
+                title='현재 전체 최고 기록입니다.',
+                description=strings['msg-ranking-updown'].format(highest_score, highest_score_people_string),
+                colour=0x4287f5
+            ))
+
 
 client = MainClient()
 client.run(secrets['token'])
