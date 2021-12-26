@@ -4,7 +4,7 @@ from datetime import datetime
 import random
 
 # Load secrets from secrets.json
-with open('secrets.json', 'r', encoding='UTF8') as secrets_file:
+with open('secrets_beta.json', 'r', encoding='UTF8') as secrets_file:
     secrets = json.load(secrets_file)
 
 # Load constant strings from strings.json
@@ -23,10 +23,11 @@ def get_site_embed(url, name, color, image_url=strings['img-default-site-thumbna
 
 
 def log(title, description, user=''):
+    current_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     if user == '':
-        print(f'[{title}] {description}')
+        print(f'{current_date} | [{title}] {description}')
     else:
-        print(f'{user}: [{title}] {description}')
+        print(f'{current_date} | {user}: [{title}] {description}')
 
 
 def dump_new_record(data_block, score, user):
