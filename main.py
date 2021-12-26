@@ -274,8 +274,7 @@ class MainClient(discord.Client):
                 description=strings['msg-ranking-updown'].format(highest_score, highest_score_people_string),
                 colour=0x4287f5
             ))
-            log('업다운 랭킹 확인', strings['msg-ranking-updown'].format(highest_score, highest_score_people_string),
-                user=message_author)
+            log('업다운 랭킹 확인', f'최고 기록: {highest_score}번', user=message_author)
 
 
 client = MainClient()
