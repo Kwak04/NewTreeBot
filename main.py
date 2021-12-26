@@ -23,10 +23,16 @@ def get_site_embed(url, name, color, image_url=strings['img-default-site-thumbna
 
 
 def log(title, description, user=''):
+    current_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     if user == '':
-        print(f'[{title}] {description}')
+        log_text = f'{current_date} | [{title}] {description}'
+        print(log_text)
     else:
-        print(f'{user}: [{title}] {description}')
+        log_text = f'{current_date} | {user}: [{title}] {description}'
+        print(log_text)
+
+    with open('log.txt', 'a', encoding='UTF8') as log_file:
+        log_file.write(log_text + '\n')
 
 
 def dump_new_record(data_block, score, user):

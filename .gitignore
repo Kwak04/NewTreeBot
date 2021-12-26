@@ -3,6 +3,7 @@ secrets.json
 secrets_beta.json
 
 # Data
+log.txt
 updownscore.json
 
 # Byte-compiled / optimized / DLL files
