@@ -4,7 +4,7 @@ from datetime import datetime
 import random
 
 # Load secrets from secrets.json
-with open('secrets.json', 'r', encoding='UTF8') as secrets_file:
+with open('secrets_beta.json', 'r', encoding='UTF8') as secrets_file:
     secrets = json.load(secrets_file)
 
 # Load constant strings from strings.json
@@ -274,6 +274,7 @@ class MainClient(discord.Client):
                 description=strings['msg-ranking-updown'].format(highest_score, highest_score_people_string),
                 colour=0x4287f5
             ))
+            log('업다운 랭킹 확인', f'최고 기록: {highest_score}번', user=message_author)
 
 
 client = MainClient()
