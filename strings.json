@@ -9,5 +9,6 @@
 
   "msg-swear-detector": "<@{0.author.id}>님 욕하지 마세요~~^^\n삭제된 메시지: ||{0.content}||",
   "msg-time": "{0.year}년 {0.month}월 {0.day}일\n{0.hour}시 {0.minute}분 {0.second}초",
-  "msg-time-without-line-break": "{0.year}년 {0.month}월 {0.day}일 {0.hour}시 {0.minute}분 {0.second}초"
+  "msg-time-without-line-break": "{0.year}년 {0.month}월 {0.day}일 {0.hour}시 {0.minute}분 {0.second}초",
+  "msg-ranking-updown": "최고 기록: {0}번\n 기록 보유자: {1}"
 }
