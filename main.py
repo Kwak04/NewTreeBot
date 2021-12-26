@@ -5,11 +5,11 @@ import discord
 import json
 
 # Load secrets from secrets.json
-with open('secrets.json', encoding='UTF8') as secrets_file:
+with open('secrets.json', 'r', encoding='UTF8') as secrets_file:
     secrets = json.load(secrets_file)
 
 # Load constant strings from strings.json
-with open('strings.json', encoding='UTF8') as strings_file:
+with open('strings.json', 'r', encoding='UTF8') as strings_file:
     strings = json.load(strings_file)
 
 
@@ -60,7 +60,7 @@ class MainClient(discord.Client):
                     embed = discord.Embed(
                         title='욕설이 감지되었습니다.',
                         description=strings['msg-swear-detector'].format(message),
-                        colour=0xff0000
+                        colour=0xff0000  # Red
                     )
                     await channel.send(embed=embed)
                     log('욕 감지됨', f'감지된 욕: {word}', user=message_author)
@@ -150,7 +150,7 @@ class MainClient(discord.Client):
             embed = discord.Embed(
                 title='UPDOWN 게임을 시작합니다.',
                 description='1부터 100 사이의 숫자를 맞춰주세요!',
-                colour=0x0dffb6
+                colour=0x0dffb6  # Mint
             )
             await channel.send(embed=embed)
             log('UPDOWN', f'게임을 시작합니다. | 정답: {number}', user=message_author)
@@ -168,7 +168,7 @@ class MainClient(discord.Client):
                     await channel.send(embed=discord.Embed(
                         title='1부터 100까지의 수만 입력하실 수 있습니다.',
                         description='수를 다시 입력해 주세요.',
-                        colour=0xff0000
+                        colour=0xff0000  # Red
                     ))
 
                 # UP
@@ -176,7 +176,7 @@ class MainClient(discord.Client):
                     embed = discord.Embed(
                         title='UP!',
                         description='정답은 입력하신 숫자보다 큽니다!',
-                        colour=0xff7c2b
+                        colour=0xff7c2b  # Brown
                     )
                     await channel.send(embed=embed)
                     log('UPDOWN', f'Up!   | {guessed_number} < {number}', user=message_author)
@@ -186,7 +186,7 @@ class MainClient(discord.Client):
                     embed = discord.Embed(
                         title='DOWN!',
                         description='정답은 입력하신 숫자보다 작습니다!',
-                        colour=0xff7c2b
+                        colour=0xff7c2b  # Brown
                     )
                     await channel.send(embed=embed)
                     log('UPDOWN', f'Down! | {guessed_number} > {number}', user=message_author)
@@ -195,11 +195,38 @@ class MainClient(discord.Client):
             embed = discord.Embed(
                 title='맞추셨습니다!',
                 description=f'시도 횟수: {count}',
-                colour=0x0dff62
+                colour=0x0dff62  # Green
             )
             await channel.send(embed=embed)
             log('UPDOWN', f'게임이 종료되었습니다. | 시도 횟수: {count}', user=message_author)
 
+        # Check my score
+        if message_content.startswith('새나무 내 점수') or message_content.startswith('새나무 내 기록'):
+            # Check if the author has a nickname
+            author_name = message_author.nick
+            if author_name is None:
+                author_name = message_author.name
+
+            with open('updownscore.json', 'r', encoding='UTF8') as ranking_updown_file:
+                ranking_updown = json.load(ranking_updown_file)
+                try:
+                    my_count = ranking_updown[message_author.id]['count']
+                    my_timestamp = ranking_updown[message_author.id]['timestamp']
+                except KeyError:
+                    await channel.send(embed=discord.Embed(
+                        title=f'{author_name}님의 플레이 기록이 없습니다.',
+                        description='이번 기회에 한번 도전해 보시는 건 어떨까요?',
+                        colour=0xff0000  # Red
+                    ))
+                    log('업다운 점수 확인', '플레이 기록 없음', user=message_author)
+                else:
+                    await channel.send(embed=discord.Embed(
+                        title=f'{author_name}님의 최고 기록!',
+                        description=f'총 {my_count}번 만에 수를 맞추셨습니다.\n({my_timestamp}에 경신됨)',
+                        colour=0x4287f5  # Blue
+                    ))
+                    log('업다운 점수 확인', f'최고 기록: {my_count}', user=message_author)
+                    
 
 client = MainClient()
 client.run(secrets["token"])
